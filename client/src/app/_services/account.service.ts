@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 
 @Injectable({
@@ -9,7 +10,8 @@ import { User } from '../_models/user';
 })
 export class AccountService {
 
-  baseUrl = 'https://localhost:5001/api/';
+  // baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
 
   private currentUserSource = new ReplaySubject<User>(1);
 
@@ -34,11 +36,11 @@ export class AccountService {
     );
   }
 
-  register(model:any){
-    return this.http.post(this.baseUrl+"account/register",model).pipe(
-      map((user:User) => {
-        if(user){
-          localStorage.setItem('user',JSON.stringify(user));
+  register(model: any) {
+    return this.http.post(this.baseUrl + "account/register", model).pipe(
+      map((user: User) => {
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
           this.currentUserSource.next(user)
         }
         return user;
